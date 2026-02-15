@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import myProjects from "../constants/index"
-import arrowup from "../public/assets/arrow-up.png"
+// import arrowup from "../public/assets/arrow-up.png"
 import { useState } from 'react'
 import leftarrow from "../public/assets/left-arrow.png"
 import rightarrow from "../public/assets/right-arrow.png"
@@ -63,11 +63,11 @@ const Project = () => {
 
                 ))}
               </div>
-             <a className='flex items-center gap-2 text-white-600 cursor-pointer'
+             {/* <a className='flex items-center gap-2 text-white-600 cursor-pointer'
                 href={currproject.href} target='_blank' rel='noreferrer' >
               <p>Check live sites</p>
               <img src={arrowup} alt="" className='w-3 h-3'/>
-             </a>
+             </a> */}
 
             </div>
 
