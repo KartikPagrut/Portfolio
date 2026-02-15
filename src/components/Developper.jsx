@@ -1,58 +1,63 @@
+import React, { useRef, useEffect, useMemo } from "react"
+import { useGLTF, useFBX, useAnimations } from "@react-three/drei"
+import { useGraph } from "@react-three/fiber"
+import { SkeletonUtils } from "three-stdlib"
 
-import { useAnimations, useFBX, useGLTF } from '@react-three/drei'
-import { useEffect, useRef } from 'react'
-import developer from "../public/models/animations/Developper.glb"
+import developer from "../public/models/developer.glb"
 import idle from "../public/models/animations/idle.fbx"
 import salute from "../public/models/animations/salute.fbx"
-import victory from "../public/models/animations/victory.fbx"
 import clapping from "../public/models/animations/clapping.fbx"
+import victory from "../public/models/animations/victory.fbx"
 
-const Developper = ({ animationName = "idle", ...props }) => {
+const Developer = ({ animationName = "idle", ...props }) => {
   const group = useRef()
-  const { nodes, materials } = useGLTF(developer)
 
-  const { animations: idleAnim } = useFBX(idle)
-  const { animations: saluteAnim } = useFBX(salute)
-  const { animations: victoryAnim } = useFBX(victory)
-  const { animations: clappingAnim } = useFBX(clapping)
+  // Load model
+  const { scene } = useGLTF(developer)
 
-  idleAnim[0].name = "idle"
-  saluteAnim[0].name = "salute"
-  victoryAnim[0].name = "victory"
-  clappingAnim[0].name = "clapping"
+  // Clone skeleton
+  const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
+  const { nodes, materials } = useGraph(clone)
 
-  const { actions } = useAnimations(
-    [
-      idleAnim[0],
-      saluteAnim[0],
-      victoryAnim[0],
-      clappingAnim[0],
-    ],
-    group
-  )
+  // Load animations
+  const idleFBX = useFBX(idle)
+  const clapFBX = useFBX(clapping)
+  const victoryFBX = useFBX(victory)
+  const saluteFBX = useFBX(salute)
 
+  // Prepare animations once
+  const animations = useMemo(() => {
+    const i = idleFBX.animations[0]
+    const c = clapFBX.animations[0]
+    const d = victoryFBX.animations[0]
+    const s = saluteFBX.animations[0]
+
+    if (!i || !c || !d || !s) return []
+
+    i.name = "idle"
+    c.name = "clapping"
+    d.name = "victory"
+    s.name = "salute"
+
+    return [i, c, d, s]
+  }, [idleFBX, clapFBX, victoryFBX, saluteFBX])
+
+  const { actions } = useAnimations(animations, group)
+
+  // Play animation safely
   useEffect(() => {
     if (!actions || !actions[animationName]) return
 
-    actions[animationName]
-      .reset()
-      .fadeIn(0.5)
-      .play()
+    Object.values(actions).forEach(a => a.stop())
 
-    return () => {
-      actions[animationName]?.fadeOut(0.5)
-    }
+    actions[animationName].reset().fadeIn(0.4).play()
+
+    return () => actions[animationName]?.fadeOut(0.4)
   }, [animationName, actions])
 
-
-
-
-
-
-
-
+ 
   return (
-    <group {...props}  ref={group} dispose={null}>
+    <group ref={group} {...props} dispose={null}>
       <primitive object={nodes.Hips} />
       <skinnedMesh
         name="EyeLeft"
@@ -121,5 +126,4 @@ const Developper = ({ animationName = "idle", ...props }) => {
 }
 
 useGLTF.preload(developer)
-
-export default Developper;
+export default Developer

@@ -36,7 +36,7 @@ const Experience = () => {
 
                 <div className='work-content'>
                     <div className='sm:py-10 py-5 sm:px-5 px-2.5'>
-                      {workExperiences.map(({id,name,pos,icon,duration,title,animation}) => (
+                      {workExperiences.map(({id,name,pos,icon,title,animation}) => (
 
                          <div key={id} 
                          onClick={()=> setanimationName(animation.toLowerCase())}
@@ -57,7 +57,7 @@ const Experience = () => {
                             <div className='sm:p-5 px-2.5 py-5'>
 
                                  <p className='font-bold text-white-800'>{name}</p>
-                                 <p className='text-sm mb-5'>{pos}--{duration}</p>
+                                 <p className='text-sm mb-5'>{pos}</p>
                                  <p className='group-hover:text-white transition-all ease-in-out duration-500  '>{title}</p>
 
                             </div>

@@ -50,3 +50,7 @@ const Cube = ({ ...props }) => {
 useGLTF.preload(cube);
 
 export default Cube;
+
+
+
+

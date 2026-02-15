@@ -8,7 +8,7 @@ import Button from "../components/Button"
 import { useState } from 'react'
 import tick from "../public/assets/tick.svg"
 import copy from "../public/assets/copy.svg"
-
+import github from "../public/assets/github.svg"
 
 
 const About = () => {
@@ -95,6 +95,10 @@ const handlecopy=()=>{
                         <div className='copy-container'onClick={handlecopy}>
                           <img src={hascopied ? tick:copy } alt="" />
                           <p className='lg:text-2xl md:text-xl font-medium text-gray_gradient text-white'>kartikpagrut2610@gmail</p>
+                        </div>
+                        <div className='copy-container' onClick={()=>window.open("https://github.com/KartikPagrut")}>
+                          <img src={github} alt="GitHub Icon" className="w-6 h-6 mr-2" />
+                          <p className='lg:text-2xl md:text-xl font-medium text-gray_gradient text-white'>GitHub Profile</p>
                         </div>
 
                       </div>
